@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,4 +25,94 @@
 </div>
 </div>
 </body>
-</html>
+</html> --}}
+<x-guest-layout>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-3 fw-bold text-white mb-3">⚡ Presto.it</h1>
+            <p class="lead text-white fs-2">Piattaforma #1 Annunci</p>
+        </div>
+
+        <!-- CAROUSEL RICERCA -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div id="searchCarousel" class="carousel slide shadow-lg rounded-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card border-0 bg-white p-5 rounded-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                                        <h3 class="fw-bold">Cosa cerchi?</h3>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <input type="text" class="form-control form-control-lg rounded-4 shadow" placeholder="iPhone, Auto...">
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="btn btn-primary btn-lg w-100 rounded-4 shadow-lg">CERCA</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card border-0 bg-white p-5 rounded-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-map-marker-alt fa-3x text-success mb-3"></i>
+                                        <h3 class="fw-bold">Quale città?</h3>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <input type="text" class="form-control form-control-lg rounded-4 shadow" placeholder="Roma, Milano...">
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="btn btn-success btn-lg w-100 rounded-4 shadow-lg">TROVA</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#searchCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#searchCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        @guest
+        <!-- FORM LOGIN -->
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-lg rounded-5 bg-white">
+                    <div class="card-body p-5">
+                        <h2 class="text-center fw-bold text-dark mb-4">ACCEDI</h2>
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <input type="email" name="email" class="form-control form-control-lg rounded-4 shadow-sm border-0 py-3 px-4" placeholder="Email" required>
+                            </div>
+                            <div class="mb-4">
+                                <input type="password" name="password" class="form-control form-control-lg rounded-4 shadow-sm border-0 py-3 px-4" placeholder="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-4 py-3 fw-bold shadow-lg">ACCEDI</button>
+                        </form>
+                        <div class="text-center mt-4">
+                            <a href="{{ route('register') }}" class="text-primary fw-bold">Non hai account? Registrati</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endguest
+    </div>
+</x-guest-layout>
