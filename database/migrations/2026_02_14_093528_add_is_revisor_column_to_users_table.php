@@ -1,5 +1,15 @@
 <?php
 
+
+
+
+
+// nuova migrazione, il cui scopo sarà aggiungere alla
+//già esistente tabella users una nuova colonna, chiamata is_revisor.
+
+
+
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +25,10 @@ return new class extends Migration
 
 
           $table->boolean('is_revisor')->default(false);
-    });
+    
+    
+    
+          });
     }
 
     //accetta 1 dato di tipo booleano;
@@ -29,8 +42,7 @@ return new class extends Migration
 
     {
         Schema::table('users', function (Blueprint $table) {
-
-   $table->boolean('is_revisor')->default(false)->after('email');
+        $table->dropColumn('is_revisor');
         });
     }
 };

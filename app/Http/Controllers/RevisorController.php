@@ -2,39 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Annuncio;
+
+//RevisorController
+//Il revisore avrà bisogno di unʼarea riservata dove poter vedere gli articoli da revisionare e da qui
+
+//ACCETTARLI O RIFIUTARLI  Il file 
+// resources/views/revisor/index.blade.php deve usare la variabile corretta. 
+// Assicurati che nel tuo RevisorController la variabile passata sia $article_to_check.
+
+//PAGINA principale per la dashboard revisore
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Article;
 
 class RevisorController extends Controller
 {
     public function index()
     {
-        $annuncio = Annuncio::inAttesa()->first();
-        return view('revisor.dashboard', compact('annuncio'));
+        // Ottieni gli articoli da revisionare
+        $articles_to_check = Article::toBeReviewed()->get(); // Cambiato da first() a get() per ottenere tutti gli articoli in attesa
+
+        // Passa la variabile corretta alla vista
+        return view('revisor.index', compact('articles_to_check'));
     }
 
-    public function accept(Annuncio $annuncio)
+    public function accept(Article $article)
     {
-        if ($annuncio->stato !== 'in_attesa') {
-            return back()->with('error', 'Annuncio non valido');
-        }
-        $annuncio->accept();
-        return redirect()->route('revisor.dashboard')->with('success', 'Annuncio APPROVATO');
+        $article->update(['is_accepted' => true]);
+        return redirect()->route('revisor.index')->with('status', 'Articolo accettato');
     }
 
-    public function reject(Annuncio $annuncio)
+    public function reject(Article $article)
     {
-        if ($annuncio->stato !== 'in_attesa') {
-            return back()->with('error', 'Annuncio non valido');
-        }
-        $annuncio->reject();
-        return redirect()->route('revisor.dashboard')->with('success', 'Annuncio RIFIUTATO');
-    }
-
-    public function undo()
-    {
-        Annuncio::undoLastAction();  // ← CORRETTO
-        return redirect()->route('revisor.dashboard')->with('info', 'Azione ANNULLATA');
+        $article->update(['is_accepted' => false]);
+        return redirect()->route('revisor.index')->with('status', 'Articolo rifiutato');
     }
 }

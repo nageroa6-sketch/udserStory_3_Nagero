@@ -4,27 +4,47 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RevisorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AnnuncioController;
 
-// HOME + WELCOME
-Route::get('/', function () {
-    return view('welcome');
-});
 
-// AUTENTICAZIONE (laravel/ui)
-Auth::routes();
+// Homepage pubblica (ospiti + loggati leggeri)
 
-// DASHBOARD STANDARD
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/', [HomeController::class, 'welcome'])
+    ->name('welcome');
 
-// ROTTE REVISIONE (SOLO REVISORES)
-Route::middleware(['auth', 'is_revisor'])->prefix('revisor')->name('revisor.')->group(function () {
-    Route::get('/dashboard', [RevisorController::class, 'index'])->name('dashboard');
-    Route::patch('/annunci/{annuncio}/accetta', [RevisorController::class, 'accept'])->name('accept');
-    Route::delete('/annunci/{annuncio}/rifiuta', [RevisorController::class, 'reject'])->name('reject');
-    Route::post('/annulla', [RevisorController::class, 'undo'])->name('undo');
-});
 
-// HOME
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Dashboard utente autenticato
+
+
+Route::get('/home', [HomeController::class, 'dashboard'])
+    ->middleware('auth')
+    ->name('home');
+
+// Annunci (CRUD base)
+
+Route::resource('annunci', AnnuncioController::class)
+    ->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy']);
+
+Route::get('annunci/{annuncio:slug}', [AnnuncioController::class, 'show'])
+    ->name('annunci.show');   // opzionale se vuoi slug invece di id
+
+
+// Area revisori (protetta)
+// ────────────────────────────────────────────────
+
+
+
+// Route::prefix('revisor')->middleware(['auth', 'isRevisor'])->group(function () {
+    Route::get('/', [RevisorController::class, 'index'])->name('revisor.index');
+    Route::patch('{annuncio}/accept', [RevisorController::class, 'accept'])->name('revisor.accept');
+    Route::patch('{annuncio}/reject', [RevisorController::class, 'reject'])->name('revisor.reject');
+// });
+
+// Richiesta diventare revisore (esempio)
+// ────────────────────────────────────────────────
+Route::post('/become-revisor', [RevisorController::class, 'becomeRevisor'])
+    ->middleware('auth')
+    ->name('become.revisor');
+
+// Auth routes (già fornite da Laravel Breeze/Fortify/Jetstream)
+require __DIR__.'/auth.php';
