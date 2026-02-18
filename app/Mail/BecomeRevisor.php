@@ -1,6 +1,6 @@
 
 
-<!-- vista mail = per richiesta revisore . Pagina BecomeReviso, da qui, 
+<!-- vista mail = per richiesta revisore . Pagina BecomeRevisor, da qui, 
  secondo logica file.  -->
 
 
@@ -16,7 +16,11 @@
 
 
                     <h1 class="text-center mb-4">Lavora con noi</h1>
-                    <p class="text-center text-muted">Compila il modulo per candidarti come revisore del portale.</p>
+
+
+
+
+                    <p class="text-center"> Compila il modulo per candidarti come revisore del portale.</p>
                     
                     <form action="{{ route('revisor.submit') }}" method="POST">
                         @csrf

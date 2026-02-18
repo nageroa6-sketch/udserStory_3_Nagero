@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('stato')->default('in_attesa');
           
-          
+          // colonna per accettare 
           $table->boolean('is_accepted')->nullable()->default(null);
           
             $table->timestamps();

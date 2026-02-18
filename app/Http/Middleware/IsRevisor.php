@@ -3,37 +3,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;use Illuminate\Support\Facades\Auth;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class IsRevisor
 {
-    
-public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->is_revisor) {
+        if (Auth::check() && Auth::user()->is_revisor === true) {
             return $next($request);
         }
 
-        // return abort(403, 'Accesso riservato ai revisori');
-
-        return redirect('/')
-            ->with('error', 'Devi essere revisore per accedere a questa area.');
+        // Se non è revisore → reindirizza con messaggio
+        return redirect('/home')
+            ->with('error', 'Accesso riservato solo ai revisori.');
     }
 }
-
-// public function handle(Request $request, Closure $next): Response
-//     {
-//         if (auth()->check() && auth()->user()->is_revisor) {
-    
-    
-    
-//         }
-
-//         // return abort(403, 'Accesso riservato ai revisori');
-
-//         return redirect('/')
-//             ->with('error', 'Devi essere revisore per accedere a questa area.');
-//     }
-// }
-   

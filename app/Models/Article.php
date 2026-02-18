@@ -1,24 +1,54 @@
-
 <?php
-
-
 namespace App\Models;
 
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Article extends Model
 {
-    protected static function booted()
+    use HasFactory;
+
+    protected $fillable = [
+        'title', 'body', 'is_accepted', 'user_id',
+    ];
+
+    protected $casts = [
+        'is_accepted' => 'boolean',
+    ];
+
+    // Relazione autore
+    public function user()
     {
-        // Global Scope per gli articoli accettati
-        static::addGlobalScope('accepted', function (Builder $builder) {
-            $builder->where('is_accepted', true);
-        });
+        return $this->belongsTo(User::class);
     }
 
-    public function scopeToBeReviewed($query)
-    {
-        return $query->where('is_accepted', false); 
-    }
+    // Global Scope: solo accettati visibili al pubblico
+   
+   
+   
+
+
+
+
+    protected static function booted()
+{
+    static::addGlobalScope('accepted', fn($q) => $q->where('is_accepted', true));
 }
+
+
+
+
+
+
+
+
+
+
+
+public function scopeToReview($query)
+{
+    return $query->whereNull('is_accepted');
+}}

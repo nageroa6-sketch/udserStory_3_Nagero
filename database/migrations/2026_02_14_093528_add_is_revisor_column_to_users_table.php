@@ -4,9 +4,7 @@
 
 
 
-// nuova migrazione, il cui scopo sarà aggiungere alla
-//già esistente tabella users una nuova colonna, chiamata is_revisor.
-
+//Migrazione per flag revisore
 
 
 
